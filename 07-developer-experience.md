@@ -41,7 +41,7 @@ Invest in observability as a first-class concern:
 
 ## 5.3.5 Developer Portal & Third-Party Integration Environment
 
-As Saga evolves from a standalone application into a platform — with a standardized shell module contract ([Section 5.1.4](05-architecture-modernization.md#514-multi-platform-shell)), GraphQL and FHIR APIs ([Section 5.2.5](06-interoperability-ehds.md#525-sagaplus-as-api-platform)), and third-party extensibility as a design goal — we need to invest in the tools and environment that make it practical for external developers to build on Saga.
+As Saga evolves from a standalone application into a platform — with a standardized shell module contract ([Section 5.1.4](05-architecture-modernization.md#514-shell-strategy--wpf-modernization--standardized-module-contract)), GraphQL and FHIR APIs ([Section 5.2.5](06-interoperability-ehds.md#525-sagaplus-as-api-platform)), and third-party extensibility as a design goal — we need to invest in the tools and environment that make it practical for external developers to build on Saga.
 
 Without a clear developer experience, third-party integration remains a theoretical capability. The goal is to lower the barrier so that a developer at a partner organization, a government agency, or an independent software vendor can go from "I want to integrate with Saga" to a working prototype with minimal friction and no dependency on Helix engineers.
 
@@ -70,7 +70,7 @@ A dedicated environment where third-party developers can build and test integrat
 To make third-party module development practical, provide a development kit that abstracts the shell integration complexity:
 
 - **Starter templates.** Project scaffolding for the most common module types — an Angular module that runs in the shell, a standalone web app that uses the GraphQL API, a backend service that consumes FHIR events. Templates should include authentication setup, context handling, and basic navigation integration out of the box.
-- **Local development shell.** A lightweight, standalone version of the Saga shell that developers can run locally. It should simulate patient context, navigation events, and session management so that module developers can build and test without deploying to the sandbox. This could be a Docker image or a simple Electron/Tauri wrapper.
+- **Local development shell.** A lightweight, standalone version of the Saga shell that developers can run locally. It should simulate patient context, navigation events, and session management so that module developers can build and test without deploying to the sandbox. This could be a minimal web-based shell that implements the standardized module contract, or a Docker image that includes the necessary context APIs.
 - **CLI tooling.** A command-line tool for common developer tasks: scaffold a new module, validate a module manifest against the shell contract, run the local shell with a module loaded, deploy a module to the sandbox for integration testing.
 - **Testing utilities.** Helpers for writing integration tests against the Saga APIs — mock context providers, test fixtures for common data patterns, and a test harness that simulates the shell environment.
 

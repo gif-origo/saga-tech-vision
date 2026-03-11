@@ -17,7 +17,7 @@
 - **Journal:** Begin design of the aggregation layer and Journal data model. Define internal API contracts for existing data sources (TextView, PatientIndex).
 - Implement feature flag infrastructure for SagaPlus module rollout.
 - Create module migration playbook (first draft).
-- **New shell:** Evaluate shell technology candidates. Build proof-of-concept for top 1–2 options, testing Angular module hosting and IPC with the Delphi app.
+- **Shell:** Define the standardized module contract (registration, context injection, navigation, events). Prototype SagaPlus module hosting in the WPF shell via WebView2.
 - **Developer portal:** Define the shell module contract and GraphQL schema design principles. Begin drafting API documentation structure.
 - **Data sovereignty:** Begin structuring codebase for source-available model. Evaluate licensing options.
 
@@ -33,7 +33,7 @@
 - Introduce usage telemetry in SagaPlus modules.
 - Engage with Icelandic digital health authority on EHDS implementation timeline and national requirements.
 - **Security:** Implement comprehensive audit logging for patient data access. Harden external-facing APIs (FHIR, Silva). Adopt SAST tooling.
-- **New shell:** Select shell technology. Implement process bridge IPC protocol (patient context, navigation). Begin internal dogfooding of new shell with early SagaPlus modules.
+- **Shell:** Implement module contract in the WPF shell. Enable SagaPlus modules (Sheets, Journal) to run inside WPF with shared patient context. Begin transitioning users off the Delphi shell for workflows that are covered by WPF + SagaPlus.
 - **Developer portal:** Launch developer portal with GraphQL playground, FHIR endpoint documentation, and authentication guide. Deploy sandbox environment with synthetic data. Publish first module starter templates.
 - **Data sovereignty:** Establish government-accessible source repository for SagaPlus components. Publish open API documentation for FHIR facade.
 
@@ -49,7 +49,7 @@
 - Continue module migrations, prioritized by usage data and integration value.
 - Mature observability with alerting and SLA dashboards.
 - **Security:** Conduct penetration testing on consolidated instances and external APIs. Establish security monitoring and incident response plan. Implement periodic access reviews.
-- **New shell:** Roll out new shell to pilot clinics alongside Delphi app (process bridge). Expand IPC capabilities. Begin onboarding third-party module integrations. Evaluate macOS readiness for Nordic market.
+- **Shell:** Roll out WPF shell as primary application for pilot clinics, replacing Delphi for day-to-day use. Onboard first third-party modules via the standardized module contract. Evaluate whether a multi-platform shell is needed for Nordic expansion — the module contract ensures this remains an option without rework.
 - **Developer portal:** Release Module Development Kit (MDK) with local shell, CLI tooling, and testing utilities. Onboard first third-party module partners. Establish module certification process.
 - **Data sovereignty:** Present transparency and data ownership strategy to government stakeholders. Conduct first government-invited security audit.
 - Revisit architecture: assess whether further service decomposition is warranted based on team growth and product needs.

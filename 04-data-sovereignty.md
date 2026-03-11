@@ -26,7 +26,7 @@ This is a "source-available" or "government open source" model — not full open
 
 **Proposed approach:**
 
-- **SagaPlus modules and new shell — source available to government.** The newest components (Sheets, Journal, Billing modules, the new multi-platform shell, and the FHIR facade) should have their source code accessible to the Icelandic government and its designated auditors. This allows the government to verify security practices, audit data handling, and have confidence that they are not dependent on a black box.
+- **SagaPlus modules and shell — source available to government.** The newest components (Sheets, Journal, Billing modules, the WPF shell, and the FHIR facade) should have their source code accessible to the Icelandic government and its designated auditors. This allows the government to verify security practices, audit data handling, and have confidence that they are not dependent on a black box.
 - **Backend services — source available to government.** Modern .NET backend services should follow the same transparency model. The government should be able to inspect how data is processed, stored, and transmitted.
 - **Legacy Delphi/WPF — not in scope.** The legacy codebase is being phased out and does not need to be part of the open source strategy. Focus transparency efforts on the components that represent the future.
 - **Licensing model.** Consider a dual-license or source-available license (e.g., Business Source License, Server Side Public License, or a custom government inspection license). The goal is to allow government audit and reduce lock-in concerns while protecting Helix's commercial interests. The exact license model requires legal input, but the technical decision to structure the codebase for openness can begin now.

@@ -15,8 +15,8 @@
 | Instance consolidation causes data or configuration issues | Disruption for organizations being migrated | Build repeatable migration tooling, run consolidations incrementally, validate data isolation rigorously |
 | Nordic expansion requirements are unclear | Architectural rework later | Engage early with potential Nordic partners/customers to understand requirements; design for extensibility |
 | User resistance to SagaPlus modules | Low adoption undermines migration ROI | Feature flags, gradual rollout, telemetry-driven iteration, and tight feedback loops |
-| Shell technology choice doesn't meet requirements | Rework or technology switch mid-stream | Build proof-of-concept early, test against key requirements (Angular hosting, IPC, cross-platform), make decision before committing to production development |
-| Process bridge IPC adds complexity and latency | Jarring user experience between legacy and modern modules | Start with minimal context sharing (patient, session), iterate based on user feedback, set performance budgets for context switches |
+| WPF shell struggles to host SagaPlus modules cleanly | Poor embedded web experience, context sync issues | Prototype WebView2 embedding early, validate context passing between WPF and Angular, set performance budgets |
+| Delphi shell retirement takes longer than expected | Continued maintenance burden of dual shells | Identify remaining Delphi-only workflows early, prioritize migrating the most-used ones, accept that some edge cases may linger |
 | Journal aggregation performance | Slow Journal kills adoption | Design with caching, lazy loading, and progressive rendering from day one; set performance budgets |
 | Silva ↔ Saga integration complexity | Workflow conflicts, scheduling inconsistency, data sync issues | Define clear API contracts early, implement conflict resolution, test with realistic concurrent usage scenarios |
 | Government trust erodes despite technical efforts | Political pressure to replace Saga | Engage proactively, deliver on transparency commitments early, treat government relationship as a first-class priority |

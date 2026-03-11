@@ -37,7 +37,7 @@ The ongoing consolidation from many Saga instances to fewer shared deployments r
 - **Tenant isolation testing.** As part of the CI/CD pipeline, include tests that verify data isolation between tenants — ensuring that one organization's data is never visible to or modifiable by another.
 - **Migration tooling.** Build repeatable tooling for migrating an organization from a standalone Saga instance into a consolidated deployment. This includes data migration, configuration mapping, and validation. Each consolidation should be smoother than the last.
 
-## 5.1.4 Multi-Platform Shell
+## 5.1.4 Shell Strategy — WPF Modernization & Standardized Module Contract
 
 The current Saga desktop experience is hosted inside the legacy Delphi application, which acts as the shell for all modules — including the newer WPF components and embedded SagaPlus Angular modules. This creates a hard dependency on the Delphi app for all users, even those who primarily use modern modules.
 
@@ -48,45 +48,39 @@ The shell strategy therefore serves two purposes:
 1. **Simplify end-user workflows** by providing a single application that manages patient context, navigation, and session state across all modules — so clinicians can move between registration, journal, scheduling, and billing without losing context or switching between disconnected browser tabs.
 2. **Standardize module integration** by defining a clear module hosting contract — how modules register themselves, receive context (current patient, organization, user), communicate with each other, and present a consistent navigation experience. This contract applies equally to Saga's own SagaPlus modules and to third-party modules, positioning Saga as an open platform rather than a closed application.
 
-The vision is to build a **new multi-platform shell** that fulfills both roles — freeing Saga from the Delphi dependency while continuing to support legacy Windows-only modules during the transition. The browser-accessible mode remains available as a lightweight option for simple workflows and for environments where the shell cannot be installed.
+### Near-Term Focus: Improve the WPF Shell, Leave Delphi
 
-### Design Principles for the New Shell
+Rather than building a new multi-platform shell from scratch, the immediate focus is to **invest in the existing WPF shell** as the primary module host and transition away from the Delphi shell. The WPF shell already exists as part of the Saga desktop client — the goal is to make it capable of hosting SagaPlus Angular modules and acting as the main application frame, eliminating the dependency on Delphi.
 
-- **Module host, not monolith.** The shell itself should be thin — its job is to provide navigation, authentication, context management (e.g., current patient, current organization), and a frame for hosting embedded modules. Business logic lives in the modules and their backends, not in the shell.
-- **Standardized module contract.** Define a clear, documented API that all modules — first-party and third-party — use to integrate with the shell. This contract covers module registration, context injection (patient, organization, user session), inter-module navigation, and event communication. A well-defined contract lowers the barrier for building new modules and enables third-party developers to integrate without deep knowledge of Saga internals.
-- **Multi-platform.** The new shell should run on Windows, macOS, and potentially Linux, opening Saga to healthcare organizations that don't use Windows-only environments. This is particularly relevant for Nordic expansion.
-- **Third-party extensibility.** The standardized module contract naturally supports third-party applications. This positions Saga as a platform, not just an application — clinics can integrate best-of-breed tools alongside Saga's core modules.
-- **Consistent user experience.** Regardless of which modules are loaded, navigation, patient context, notifications, and session management should feel unified. The shell provides the glue that makes many modules feel like one system.
+This is a pragmatic choice:
+
+- **WPF is known technology.** The team has existing WPF expertise. Improving what we have is faster and lower risk than evaluating and adopting a new shell technology.
+- **Delphi is the bottleneck, not WPF.** The primary pain point is the Delphi dependency — its difficulty to modify, test, and deploy, and its role as the mandatory entry point for all users. Moving to WPF as the primary shell removes this bottleneck without requiring a full platform rewrite.
+- **SagaPlus embedding in WPF.** WPF can host embedded web content (via WebView2 or similar), enabling it to host SagaPlus Angular modules alongside native WPF components in a single application window.
+
+Key investments for the WPF shell:
+
+- **SagaPlus module hosting.** Enable the WPF shell to load and display SagaPlus Angular modules via embedded web views, with proper context passing (current patient, organization, user session) between the WPF host and the web content.
+- **Navigation and context management.** Implement unified navigation so that users can move between WPF-native components and embedded SagaPlus modules without losing patient context or session state.
+- **Delphi migration path.** Identify which Delphi-hosted workflows still require the Delphi shell and create a plan to either migrate them to WPF/SagaPlus or provide them through the WPF shell. The goal is to reach a point where the Delphi application is no longer required for day-to-day clinical use.
+
+### Standardized Module Contract
+
+Regardless of the shell technology, the most important investment is defining a **standardized module contract** — a documented API that governs how any module integrates with the shell. This contract is what turns the shell from a monolithic application into a platform.
+
+The module contract covers:
+
+- **Module registration** — how a module declares itself, its navigation entry points, and its capabilities.
+- **Context injection** — how the shell provides the current patient, organization, user session, and other context to modules.
+- **Inter-module navigation** — how modules request navigation to other modules while preserving context.
+- **Event communication** — how modules publish and subscribe to events (e.g., patient changed, appointment booked).
+- **UI guidelines** — layout, theming, and interaction patterns that keep the experience consistent across modules.
+
+This contract must be designed to be **shell-agnostic** — it should not depend on WPF-specific APIs or patterns. Modules that conform to the contract should work in any shell implementation that supports it. This is a deliberate architectural decision:
+
+- **Third-party extensibility today.** A well-defined, documented contract enables third-party developers to build modules that integrate with the WPF shell through the developer portal ([Section 5.3.5](07-developer-experience.md#535-developer-portal--third-party-integration-environment)).
+- **Multi-platform shell as a future option.** If a multi-platform shell becomes a strategic priority — for example, to support Nordic expansion into non-Windows environments — the standardized module contract means modules built today will work in that future shell without modification. The contract is the investment that keeps this door open without requiring us to build the multi-platform shell now.
 - **Browser fallback.** Modules should continue to be accessible via direct URL for simple workflows, testing, and environments where the shell is not available. The module contract should be designed so that modules can detect whether they are running inside the shell or standalone and adapt accordingly (e.g., reading patient context from the shell API vs. requiring manual patient selection).
-
-### Legacy Module Strategy — Three Options Under Evaluation
-
-The key architectural question is how the legacy Delphi/WPF modules coexist with the new shell during the transition period. Three approaches are being considered:
-
-**Option A: Embed legacy modules in the new shell (Windows only).** On Windows, the new shell could host the Delphi/WPF components within its process, similar to how the current Delphi shell embeds WPF and Angular modules today. This gives users a single application window but introduces technical complexity — embedding Delphi components in a non-Delphi host requires careful interop work and may limit shell technology choices.
-
-**Option B: Process bridge — two apps, one experience.** The legacy Delphi app continues to run as a separate process alongside the new shell, but the two communicate through a defined interprocess communication (IPC) protocol. Patient context, navigation events, and session state are synchronized so that switching between legacy and modern modules feels seamless to the user. This approach:
-- Avoids the technical risk of embedding Delphi components in a new host.
-- Allows each application to evolve independently.
-- Can be built incrementally — start with basic context sharing (current patient) and expand to deeper integration over time.
-- Requires investment in a robust IPC layer (e.g., named pipes, local WebSocket, or a lightweight message bus).
-
-**Option C: Separate shells, gradual migration.** The old Delphi shell remains for legacy modules, and the new shell is used exclusively for SagaPlus modules. Users switch between the two applications manually. This is the simplest to implement but provides the worst user experience during the transition.
-
-The recommendation is to pursue **Option B (process bridge)** as the primary strategy, with the door open to Option A for Windows if the chosen shell technology makes embedding practical. Option C should be the fallback if interop proves too complex, but the goal should be a unified experience.
-
-### Technology Evaluation
-
-The shell technology choice is still being evaluated. Key candidates include:
-
-| Technology | Strengths | Considerations |
-|-----------|-----------|----------------|
-| **Electron** | Proven for hosting web content, large ecosystem, cross-platform | Memory footprint, distribution size, team needs JavaScript/Node.js experience |
-| **Tauri** | Lightweight, Rust-based, uses native webview, smaller footprint than Electron | Younger ecosystem, Rust is a new skillset for the team |
-| **.NET MAUI** | Aligns with existing .NET backend skills, native UI per platform | Web module embedding is less natural, cross-platform maturity still evolving |
-| **Progressive Web App (PWA)** | No install required, truly cross-platform, aligns with Angular SagaPlus | Limited OS integration, no process bridge for legacy modules, offline capability constraints |
-
-The evaluation should weigh: cross-platform support, ease of embedding Angular web modules, feasibility of IPC with the legacy Delphi app, team skillset, and long-term maintenance cost. A proof-of-concept should be built early to validate the chosen technology against the process bridge requirement.
 
 ## 5.1.5 Deployment Independence
 

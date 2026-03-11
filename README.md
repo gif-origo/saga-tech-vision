@@ -28,7 +28,7 @@ This technical vision is organized into the following sections. Each section is 
 
 | # | Section | Description |
 |---|---------|-------------|
-| 5.1 | [Architecture & Infrastructure Modernization](05-architecture-modernization.md) | Strangler fig migration, service boundaries, multi-tenancy, multi-platform shell, database strategy |
+| 5.1 | [Architecture & Infrastructure Modernization](05-architecture-modernization.md) | Strangler fig migration, service boundaries, multi-tenancy, WPF shell & module contract, database strategy |
 | 5.2 | [Interoperability & EHDS Compliance](06-interoperability-ehds.md) | FHIR facade, EHDS regulation, integration engine, Nordic readiness |
 | 5.3 | [Developer Experience & DevOps](07-developer-experience.md) | Testing strategy, CI/CD, onboarding, observability, developer portal & third-party environment |
 | 5.4 | [Security Hardening](08-security.md) | Authentication, data protection, audit, application security, incident response |
