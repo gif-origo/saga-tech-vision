@@ -89,6 +89,26 @@ Key focus areas:
 - **Waitlist and capacity management** — give clinics tools within Silva to manage waitlists, optimize appointment slot utilization, and handle overbooking scenarios gracefully.
 - **EHDS alignment** — as EHDS requires patients to have access to and control over their electronic health data, the Ísland.is patient engagement layer is a natural channel for fulfilling some of these patient rights. Keep this in mind when designing data access capabilities through the national portal.
 
+## 3.5 Reporting & Data Access
+
+**Goal:** Shift reporting from a developer-dependent, custom-built model to one where users can be more self-sufficient in creating reports and accessing the data they need — supplemented by third-party tools that specialize in reporting and analytics.
+
+Reporting is a recurring source of feature requests and development effort. Today, many reporting needs require developer involvement — building custom queries, creating new report views, or modifying existing ones. This doesn't scale, and it pulls development capacity away from product work. The strategic direction is to enable users to serve themselves wherever practical, and to partner with specialized third-party reporting tools rather than building a full reporting platform inside Saga.
+
+### Principles
+
+- **Self-service first.** Users — clinic administrators, managers, quality officers — should be able to create, customize, and run common reports without filing a development request. This means exposing data in a structured, queryable way and providing tools that non-technical users can work with.
+- **Saga provides the data, not the reporting engine.** Rather than building sophisticated reporting, dashboarding, and analytics capabilities inside Saga, focus on making Saga's data accessible through well-defined interfaces (GraphQL API, database views, data exports) that third-party reporting tools can consume. Saga's role is to be a good data source, not to compete with purpose-built reporting platforms.
+- **Third-party partnerships.** Partner with reporting and analytics vendors that specialize in healthcare data. Tools like Power BI, Metabase, or domain-specific healthcare analytics platforms can connect to Saga's data layer and provide capabilities — ad-hoc queries, dashboards, scheduled reports, data visualization — that would take significant effort to build in-house. This aligns with the "reuse, integrate, then build" principle.
+
+### Key Focus Areas
+
+- **Reporting data layer.** Create a structured data access layer designed for reporting use cases — this could be read-only database views, a reporting-specific API, or a data warehouse/mart that aggregates data from across Saga's modules. The key requirement is that reporting queries don't impact transactional performance and that the data model is understandable by non-developers.
+- **GraphQL as a reporting interface.** The GraphQL API ([Section 5.2.5](06-interoperability-ehds.md#525-sagaplus-as-api-platform)) can serve as a flexible data access layer for lighter reporting needs — third-party tools and custom dashboards can query exactly the data they need without requiring direct database access.
+- **Standard report templates.** For the most common reporting needs (patient volumes, appointment statistics, billing summaries, quality indicators), provide pre-built report templates that users can run and customize with basic parameters (date range, department, provider). These reduce the barrier to entry for self-service.
+- **Third-party tool integration.** Ensure that at least one third-party reporting tool can connect to Saga's data with a supported, documented integration path. This includes authentication, data access permissions (respecting tenant isolation and role-based access), and documentation of the available data model.
+- **Deprecate custom report development.** Over time, new reporting requests should be directed toward self-service tools and third-party integrations rather than custom-built report modules. Existing custom reports continue to be maintained, but the default answer to "I need a new report" should be "Can you build it yourself with the tools we provide?" before it becomes a development task.
+
 ---
 
 [← Back to Index](README.md) | [Previous: Where We Are Today](02-current-state.md) | [Next: Data Sovereignty →](04-data-sovereignty.md)

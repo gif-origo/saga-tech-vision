@@ -21,7 +21,7 @@ This technical vision is organized into the following sections. Each section is 
 
 | # | Section | Description |
 |---|---------|-------------|
-| 3 | [Product Pillars](03-product-pillars.md) | Registration (Sheets), Journal, Billing, and Patient Engagement & Scheduling (Silva) |
+| 3 | [Product Pillars](03-product-pillars.md) | Registration (Sheets), Journal, Billing, Patient Engagement (Silva), and Reporting |
 | 4 | [Data Sovereignty & Government Trust](04-data-sovereignty.md) | Data ownership, open source strategy, anti-lock-in, and government relationship |
 
 ### Technical Strategy
