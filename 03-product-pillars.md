@@ -1,0 +1,73 @@
+# 3. Product Pillars
+
+[← Back to Index](README.md) | [Previous: Where We Are Today](02-current-state.md) | [Next: Data Sovereignty →](04-data-sovereignty.md)
+
+---
+
+Future Saga development is organized around four strategic pillars. These pillars represent the core value Saga delivers to healthcare providers and define where the team's product investment is focused over the next 1–2 years.
+
+## 3.1 Registration — Sheets Platform (SagaPlus)
+
+**Goal:** Replace legacy registration workflows with the new Sheets registration platform built in SagaPlus, establishing it as the standard for all patient and entity registration in Saga.
+
+Sheets is the first major module to fully embody the SagaPlus architecture — Angular frontend, modern .NET backend, and a flexible data-driven design. It serves as both a product milestone and a proof point for the modernization strategy.
+
+Key focus areas:
+
+- **Complete feature parity** with legacy Delphi/WPF registration for the workflows being migrated, ensuring clinics can fully transition without regression.
+- **Extensible form engine** — Sheets should support configurable registration forms that can adapt to different clinic types, specialties, and future Nordic market requirements without code changes.
+- **Data quality and validation** — registration is the entry point for all patient data in Saga. Invest in robust validation, duplicate detection, and integration with national registries (Þjóðskrá) to ensure data quality at the source.
+- **Migration and rollout** — use feature flags and gradual rollout (see [User Adoption Strategy](09-user-adoption.md)) to transition clinics from legacy registration to Sheets, with clear rollback capability.
+
+Sheets also serves as the template for how future SagaPlus modules should be built — its architecture, testing patterns, and deployment approach should be documented and reused.
+
+## 3.2 Journal — Unified Clinical Overview
+
+**Goal:** Build a new Journal overview and search module that aggregates clinical information from all parts of the Saga system — and from external sources — into a single, unified view for clinicians.
+
+The Journal module is the most clinically impactful pillar. Today, clinicians must navigate multiple legacy views and subsystems to piece together a patient's clinical picture. The new Journal will bring this information together.
+
+Key focus areas:
+
+- **Aggregation layer** — the Journal must pull data from existing Saga components (TextView, PatientIndex, and other modules) as well as external systems. This requires a well-defined internal API surface for each data source, even where the underlying implementations remain legacy.
+- **Search and filtering** — clinicians need to quickly find relevant entries across a patient's full history. Invest in performant full-text search across journal entries, documents, lab results, and notes, with filtering by date, type, author, and specialty.
+- **Read-first, write-later** — prioritize the read/overview experience first. Getting clinicians to adopt the Journal as their primary patient overview is the critical milestone. Writing and documentation workflows can follow once the view is established.
+- **External data integration** — the Journal is a natural consumer of FHIR-based data from external systems (lab results, imaging reports, documents from other providers). Align the Journal's data model with the FHIR facade (see [Interoperability & EHDS](06-interoperability-ehds.md)) so that internal and external data can be presented uniformly.
+- **Performance** — aggregating data from many sources into a single view creates performance risk. Design the aggregation layer with caching, lazy loading, and progressive rendering so the Journal feels fast even when pulling from slow or large data sources.
+
+The Journal module will be the strongest driver of SagaPlus adoption — if clinicians find it genuinely better than the legacy views, it becomes the pull that accelerates the broader modernization.
+
+## 3.3 Billing — B2B with Sjúkratryggingar Íslands (SÍ)
+
+**Goal:** Streamline the billing experience for clinics by focusing on the B2B relationship with Sjúkratryggingar Íslands (SÍ, Icelandic Health Insurance), making claims submission and reimbursement smoother and more automated.
+
+Billing is a pain point for many clinics — the process involves manual steps, error-prone data entry, and slow feedback loops on claim status. Improving this directly impacts clinic operations and revenue.
+
+Key focus areas:
+
+- **Automated claims workflow** — reduce manual steps in claims submission to SÍ. Automate validation of claims data before submission to catch errors early and reduce rejections.
+- **Real-time status feedback** — provide clinics with clear visibility into claim status (submitted, accepted, rejected, paid) without requiring them to check external systems or wait for batch reports.
+- **Error handling and resubmission** — make it easy for clinic staff to understand why a claim was rejected and to correct and resubmit without starting from scratch.
+- **Integration modernization** — if the current SÍ integration is based on legacy protocols or formats, evaluate modernizing to API-based exchange. Align with the broader FHIR strategy where applicable (e.g., FHIR Claim resources), though pragmatism should prevail — if SÍ has a well-defined API that isn't FHIR-based, use it directly.
+- **Reporting and analytics** — give clinics summary views of billing performance: submission volumes, rejection rates, average reimbursement times. This helps clinics optimize their billing processes.
+
+## 3.4 Scheduling & Patient Engagement — Silva + Ísland.is
+
+**Goal:** Replace legacy scheduling in Saga with Silva as the primary scheduling platform, while cooperating with the national Ísland.is portal for government-facing patient engagement that extends beyond scheduling.
+
+**Silva** is a separate product developed by Helix that serves as Saga's modern scheduling platform. The strategic direction is to integrate Silva deeply into the Saga workflow, progressively replacing the legacy scheduling modules currently embedded in the Saga desktop client.
+
+**Ísland.is** is the national digital services portal — its role is complementary to Silva, handling government-facing patient engagement functions such as referrals, drug renewal requests, and other interactions that belong in the public health infrastructure rather than in a clinical scheduling tool.
+
+Key focus areas:
+
+- **Silva as scheduling replacement.** Migrate scheduling workflows from legacy Saga modules to Silva. This means tight, reliable synchronization between Saga's clinical data and Silva's scheduling engine — appointments, cancellations, and schedule changes must flow in near-real-time. Define a clear API contract between the two systems and treat Silva integration as a first-class product pillar, not a sidecar.
+- **Saga ↔ Silva workflow integration.** Silva should feel like a natural part of the Saga experience for clinic staff, not a separate tool. Invest in the integration layer so that clinicians can manage scheduling from within Saga's UI (whether in the legacy shell or the new multi-platform shell) without context-switching to a separate application.
+- **Ísland.is cooperation for patient engagement.** Work with the Ísland.is platform to enable patient-facing services that sit naturally in the government portal: referrals, prescription renewals, health data access, and other functions that patients expect to find alongside their other government digital services. This requires conforming to Ísland.is technical standards, authentication (Auðkenni/electronic ID), and UX guidelines.
+- **Clear boundary between Silva and Ísland.is.** Silva handles clinical scheduling and clinic-facing booking workflows. Ísland.is handles government-facing patient engagement. Some functions may touch both (e.g., a patient booking an appointment could flow through Ísland.is to Silva), but the division of responsibility should be explicit and well-documented.
+- **Waitlist and capacity management** — give clinics tools within Silva to manage waitlists, optimize appointment slot utilization, and handle overbooking scenarios gracefully.
+- **EHDS alignment** — as EHDS requires patients to have access to and control over their electronic health data, the Ísland.is patient engagement layer is a natural channel for fulfilling some of these patient rights. Keep this in mind when designing data access capabilities through the national portal.
+
+---
+
+[← Back to Index](README.md) | [Previous: Where We Are Today](02-current-state.md) | [Next: Data Sovereignty →](04-data-sovereignty.md)
