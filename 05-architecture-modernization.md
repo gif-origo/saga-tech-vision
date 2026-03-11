@@ -8,12 +8,17 @@
 
 ## 5.1.1 Strangler Fig Migration
 
-We adopt the strangler fig pattern as our primary modernization strategy. Rather than rewriting the system, we systematically replace Delphi/WPF functionality with SagaPlus Angular modules backed by .NET APIs. Each migration is a deliberate, scoped effort:
+We adopt the strangler fig pattern as our primary modernization strategy. Rather than rewriting the system, we systematically replace Delphi/WPF functionality with modern alternatives. Each migration is a deliberate, scoped effort — but "migration" does not always mean "build a new custom module." For each legacy workflow, the team should evaluate the replacement approach in this order:
 
 1. **Identify** a bounded workflow currently in Delphi/WPF.
-2. **Build** the replacement in SagaPlus with full feature parity (or deliberate scope decisions).
-3. **Route** users to the new module, keeping the legacy path available during transition.
+2. **Evaluate the replacement path:**
+   - **Reuse** — can this workflow be replaced by a new sheet in the Sheets platform using Meðvera? Many data capture and registration workflows can be expressed as configurable forms without writing a dedicated module.
+   - **Integrate** — can a third-party product handle this workflow, integrated through the shell and Saga's APIs (GraphQL, FHIR)? If a specialized tool already exists and integrates well, prefer it over building from scratch.
+   - **Build** — if the workflow genuinely requires custom logic, UI, or data handling that neither Sheets nor a third party can provide, build a new SagaPlus module.
+3. **Route** users to the new solution, keeping the legacy path available during transition.
 4. **Retire** the legacy implementation once adoption is confirmed.
+
+This evaluation order is critical. The team's instinct may be to build a purpose-built replacement for every legacy screen, but that creates a maintenance burden that grows faster than the team. A sheet in Meðvera or a well-integrated third-party tool may cover 80% of a legacy workflow's value at 20% of the development and maintenance cost — and that is often the right trade-off.
 
 A shared prioritization framework should weigh migration candidates by user impact, maintenance cost of the legacy implementation, and integration value. The four product pillars (Registration, Journal, Billing, Scheduling) define the current migration priorities.
 

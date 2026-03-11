@@ -6,18 +6,36 @@
 
 Future Saga development is organized around four strategic pillars. These pillars represent the core value Saga delivers to healthcare providers and define where the team's product investment is focused over the next 1–2 years.
 
-## 3.1 Registration — Sheets Platform (SagaPlus)
+### Reuse Before Build
 
-**Goal:** Replace legacy registration workflows with the new Sheets registration platform built in SagaPlus, establishing it as the standard for all patient and entity registration in Saga.
+A cross-cutting principle governs how we approach new feature requests across all pillars: **exhaust existing capabilities before creating new ones.** Saga is a vast system and the team cannot afford to build purpose-built solutions for every request. When a new feature or workflow is needed, the evaluation order should be:
 
-Sheets is the first major module to fully embody the SagaPlus architecture — Angular frontend, modern .NET backend, and a flexible data-driven design. It serves as both a product milestone and a proof point for the modernization strategy.
+1. **Can it be solved with what we have?** — A new sheet in the Sheets platform using Meðvera, an adjusted configuration, or a combination of existing modules.
+2. **Can a third party solve it?** — Is there an external product or service that handles this well and can integrate through our APIs or run as a module in the shell?
+3. **Do we need to build something new?** — Only if the above options genuinely don't fit should we invest in a new custom module.
+
+This may sometimes mean sacrificing a degree of polish or feature completeness compared to a purpose-built solution. That trade-off is intentional — a modular, flexible system that the team can sustain is more valuable than a collection of specialized features that become maintenance burdens. The Sheets platform and the third-party integration strategy are the two primary mechanisms for making this work.
+
+## 3.1 Registration — Sheets Platform & Meðvera
+
+**Goal:** Replace legacy registration workflows with the Sheets platform built in SagaPlus, and establish Sheets and its configurable form engine (Meðvera) as the **default building block** for structured data capture across Saga — not just for registration.
+
+Sheets is the first major module to fully embody the SagaPlus architecture — Angular frontend, modern .NET backend, and a flexible data-driven design. It serves as both a product milestone and a proof point for the modernization strategy. But Sheets is more than a registration replacement — its configurable form engine (Meðvera) is a general-purpose tool for structured data entry that can be adapted to a wide range of clinical and administrative workflows.
+
+**Sheets as the first answer to new feature requests.** When a clinic, specialty, or customer requests a new data capture workflow — a new intake form, a specialized assessment, a referral template — the first question should be: can this be built as a new sheet using Meðvera? If the form engine can accommodate the data model and validation rules, a new sheet can be configured and deployed without writing a new module. This approach:
+
+- Reduces the number of distinct modules the team must build and maintain.
+- Gives clinics faster turnaround on workflow requests — configuration is faster than development.
+- Keeps the UX consistent — users learn one interface for structured data entry, regardless of the specific workflow.
+- Scales to Nordic expansion — new market requirements often mean new forms and workflows, which Meðvera can absorb without code changes.
 
 Key focus areas:
 
 - **Complete feature parity** with legacy Delphi/WPF registration for the workflows being migrated, ensuring clinics can fully transition without regression.
-- **Extensible form engine** — Sheets should support configurable registration forms that can adapt to different clinic types, specialties, and future Nordic market requirements without code changes.
+- **Meðvera as a platform** — invest in the form engine's flexibility: support for a wide range of field types, conditional logic, validation rules, calculated fields, and configurable layouts. The more capable Meðvera becomes, the more feature requests it can absorb without custom development.
 - **Data quality and validation** — registration is the entry point for all patient data in Saga. Invest in robust validation, duplicate detection, and integration with national registries (Þjóðskrá) to ensure data quality at the source.
 - **Migration and rollout** — use feature flags and gradual rollout (see [User Adoption Strategy](09-user-adoption.md)) to transition clinics from legacy registration to Sheets, with clear rollback capability.
+- **Extensibility boundaries** — not everything belongs in a sheet. Define clear criteria for when a workflow has outgrown what Meðvera can reasonably handle and genuinely needs a dedicated module or a third-party solution. Avoid overloading Sheets to the point where it becomes brittle.
 
 Sheets also serves as the template for how future SagaPlus modules should be built — its architecture, testing patterns, and deployment approach should be documented and reused.
 
