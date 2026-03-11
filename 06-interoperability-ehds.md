@@ -66,6 +66,47 @@ For Nordic expansion and EHDS compliance, the FHIR layer is necessary but not su
 
 Design the FHIR facade to be profile-aware from the start — the same underlying data may need to be expressed using different national profiles depending on the consumer.
 
+## 5.2.5 SagaPlus as API Platform
+
+SagaPlus is not just a UI modernization — its .NET backend services contain real business logic, domain rules, and data access that represent Saga's modern capabilities. This creates an opportunity to position the SagaPlus backend as a **platform API layer** that serves three audiences: the SagaPlus Angular frontend, third-party module developers, and external system integrators.
+
+### GraphQL API
+
+Introduce a **GraphQL interface** on the SagaPlus backend as the primary API for rich, interactive integrations:
+
+- **Flexible querying.** GraphQL lets third-party developers request exactly the data they need — patient demographics, clinical summaries, scheduling slots, billing status — without over-fetching or requiring multiple round trips. This is particularly valuable for module developers building UI-heavy integrations where data needs vary by view.
+- **Schema as documentation.** A well-designed GraphQL schema serves as a living, self-documenting API contract. Third-party developers can explore available data and operations through standard tooling (GraphQL Playground, introspection) without relying on separate API documentation that drifts from reality.
+- **Module-aligned schema design.** Organize the GraphQL schema along the same domain boundaries as the SagaPlus modules — registration, journal, billing, scheduling. Each module's backend contributes its portion of the schema, keeping the API aligned with the product architecture.
+- **Authorization and tenant scoping.** The GraphQL layer must enforce the same role-based and organization-scoped access controls as the rest of the platform (see [Security Hardening](08-security.md)). Every query and mutation must respect the caller's permissions and tenant context.
+- **Subscriptions for real-time updates.** GraphQL subscriptions can provide real-time data to third-party modules — e.g., notifying a scheduling widget when an appointment is booked or alerting a dashboard when new lab results arrive.
+
+### FHIR Endpoints on the SagaPlus Backend
+
+The FHIR facade described in Section 5.2.2 should be built on top of the SagaPlus backend services rather than as a separate, disconnected layer:
+
+- **SagaPlus as the FHIR source of truth.** As SagaPlus modules replace legacy workflows, the SagaPlus backend becomes the authoritative source for an increasing share of Saga's data. FHIR endpoints should translate directly from SagaPlus domain models to FHIR resources, rather than reaching back into legacy data stores where possible.
+- **Shared business logic.** By building FHIR endpoints on the same backend that serves the UI, we avoid duplicating validation, authorization, and business rules. A FHIR Patient resource and a GraphQL patient query go through the same domain logic.
+- **Incremental FHIR coverage follows module migration.** As each product pillar migrates to SagaPlus, the corresponding FHIR resources can be built on the new backend. This naturally aligns FHIR coverage with the modernization roadmap.
+
+### Two APIs, Two Purposes
+
+The GraphQL and FHIR interfaces serve complementary roles:
+
+| | GraphQL | FHIR |
+|---|---------|------|
+| **Primary audience** | Third-party module developers, internal frontends | External system integrators, cross-border health data exchange |
+| **Strength** | Flexible, efficient queries tailored to UI and workflow needs | Standards-based interoperability, EHDS compliance |
+| **Schema** | Saga-specific, domain-aligned | HL7 FHIR specification, national profiles |
+| **Use cases** | Custom modules in the shell, dashboards, workflow extensions | Lab integrations, national registries, patient data portability, EHDS |
+
+Both APIs are built on the same SagaPlus backend and share the same business logic, authorization, and data access — they are different projections of the same platform, not separate systems.
+
+### What This Enables
+
+- **Third-party module ecosystem.** With a GraphQL API and a standardized shell module contract ([Section 5.1.4](05-architecture-modernization.md#514-multi-platform-shell)), external developers can build modules that run inside the Saga shell and query platform data — without needing access to Saga's internals.
+- **Integration without lock-in.** External systems can choose FHIR for standards-based exchange or GraphQL for richer, Saga-specific integrations. Neither requires proprietary SDKs or Helix involvement.
+- **Data sovereignty support.** Both APIs contribute to the data portability commitments in [Section 4](04-data-sovereignty.md) — GraphQL for operational data access, FHIR for standards-based export.
+
 ---
 
 [← Back to Index](README.md) | [Previous: Architecture Modernization](05-architecture-modernization.md) | [Next: Developer Experience →](07-developer-experience.md)

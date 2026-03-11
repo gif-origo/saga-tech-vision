@@ -21,6 +21,8 @@ A shared prioritization framework should weigh migration candidates by user impa
 
 As backend services grow, we need clearer domain boundaries. Over the next year, we should define explicit service contracts for the major Saga domains — aligned with the product pillars: registration, clinical documentation (Journal), billing, and scheduling. This doesn't necessarily mean splitting into microservices — for a team of our size, well-defined modules within a modular monolith or a small number of services is more practical. The key outcome is that each domain has a clear API surface, owns its data, and can be reasoned about independently.
 
+The SagaPlus backend already embodies this thinking — each SagaPlus module has its own .NET backend with business logic and data access, rather than being a thin UI over shared legacy services. This makes SagaPlus the natural foundation for a platform API strategy. As we define service boundaries, the SagaPlus backend APIs should be designed not just to serve the Angular frontend but to be consumable by third-party integrations as well. The GraphQL and FHIR API surfaces described in [Section 5.2.5](06-interoperability-ehds.md#525-sagaplus-as-api-platform) build directly on these service boundaries.
+
 ## 5.1.3 Multi-Tenancy and Instance Consolidation
 
 The ongoing consolidation from many Saga instances to fewer shared deployments requires deliberate architectural support. As organizations are merged into shared instances, the system must cleanly separate tenant data and configuration without creating per-tenant code branches.
@@ -34,14 +36,23 @@ The ongoing consolidation from many Saga instances to fewer shared deployments r
 
 The current Saga desktop experience is hosted inside the legacy Delphi application, which acts as the shell for all modules — including the newer WPF components and embedded SagaPlus Angular modules. This creates a hard dependency on the Delphi app for all users, even those who primarily use modern modules.
 
-The vision is to build a **new multi-platform shell** that can host SagaPlus modules and third-party systems, freeing Saga from the Delphi dependency while continuing to support legacy Windows-only modules during the transition.
+SagaPlus modules can already be opened directly in a browser by navigating to a URL. This works well for simpler, self-contained workflows — a user doing a single registration task can open Sheets in a browser tab and get the job done. However, this approach breaks down for the multi-module workflows that dominate real clinical use: a clinician switching between the patient journal, scheduling, billing, and third-party tools throughout their day needs shared context (which patient, which encounter), unified navigation, and seamless transitions between modules. Opening each module in a separate browser tab loses all of that — there is no shared session, no coordinated patient context, and no way to integrate non-web tools.
+
+The shell strategy therefore serves two purposes:
+
+1. **Simplify end-user workflows** by providing a single application that manages patient context, navigation, and session state across all modules — so clinicians can move between registration, journal, scheduling, and billing without losing context or switching between disconnected browser tabs.
+2. **Standardize module integration** by defining a clear module hosting contract — how modules register themselves, receive context (current patient, organization, user), communicate with each other, and present a consistent navigation experience. This contract applies equally to Saga's own SagaPlus modules and to third-party modules, positioning Saga as an open platform rather than a closed application.
+
+The vision is to build a **new multi-platform shell** that fulfills both roles — freeing Saga from the Delphi dependency while continuing to support legacy Windows-only modules during the transition. The browser-accessible mode remains available as a lightweight option for simple workflows and for environments where the shell cannot be installed.
 
 ### Design Principles for the New Shell
 
 - **Module host, not monolith.** The shell itself should be thin — its job is to provide navigation, authentication, context management (e.g., current patient, current organization), and a frame for hosting embedded modules. Business logic lives in the modules and their backends, not in the shell.
+- **Standardized module contract.** Define a clear, documented API that all modules — first-party and third-party — use to integrate with the shell. This contract covers module registration, context injection (patient, organization, user session), inter-module navigation, and event communication. A well-defined contract lowers the barrier for building new modules and enables third-party developers to integrate without deep knowledge of Saga internals.
 - **Multi-platform.** The new shell should run on Windows, macOS, and potentially Linux, opening Saga to healthcare organizations that don't use Windows-only environments. This is particularly relevant for Nordic expansion.
-- **Third-party extensibility.** Design the module hosting interface to support not just Saga's own SagaPlus modules but also third-party applications. This positions Saga as a platform, not just an application — clinics can integrate best-of-breed tools alongside Saga's core modules.
+- **Third-party extensibility.** The standardized module contract naturally supports third-party applications. This positions Saga as a platform, not just an application — clinics can integrate best-of-breed tools alongside Saga's core modules.
 - **Consistent user experience.** Regardless of which modules are loaded, navigation, patient context, notifications, and session management should feel unified. The shell provides the glue that makes many modules feel like one system.
+- **Browser fallback.** Modules should continue to be accessible via direct URL for simple workflows, testing, and environments where the shell is not available. The module contract should be designed so that modules can detect whether they are running inside the shell or standalone and adapt accordingly (e.g., reading patient context from the shell API vs. requiring manual patient selection).
 
 ### Legacy Module Strategy — Three Options Under Evaluation
 
