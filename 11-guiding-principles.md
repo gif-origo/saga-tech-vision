@@ -4,8 +4,8 @@
 
 ---
 
-1. **Do fewer things well.** We have a vast system to support with a small team. Rather than spreading thin across many purpose-built solutions, invest deeply in flexible building blocks — Sheets/Meðvera, the shell module contract, well-designed APIs — that can absorb a wide range of requirements. Accept that modular and configurable sometimes means less polished than bespoke, and that's the right trade-off for sustainability.
-2. **Reuse, integrate, then build.** When a new feature request arrives, ask in order: can this be a new sheet in Meðvera? Can a third-party product handle it through our integration APIs? Only if neither works should we build a new module. This keeps the codebase lean and the team focused.
+1. **Do fewer things well.** We have a vast system to support with a small team. Rather than spreading thin across many purpose-built solutions, invest deeply in flexible building blocks — the Sheets platform, the shell module contract, well-designed APIs — that can absorb a wide range of requirements. Accept that modular and configurable sometimes means less polished than bespoke, and that's the right trade-off for sustainability.
+2. **Reuse, integrate, then build.** When a new feature request arrives, ask in order: can this be a new sheet in the Sheets platform? Can a third-party product handle it through our integration APIs? Only if neither works should we build a new module. This keeps the codebase lean and the team focused.
 3. **Incremental over big-bang.** Every change should be deliverable in small, safe steps. No multi-month migrations without intermediate value.
 4. **Pragmatic boundaries.** Define clear domain boundaries, but don't over-engineer into microservices prematurely. A modular monolith is fine for a team of our size.
 5. **Standards where they matter.** Adopt FHIR for external interoperability and EHDS compliance, but don't force internal systems into FHIR's data model.

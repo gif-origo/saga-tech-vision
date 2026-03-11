@@ -12,13 +12,13 @@ We adopt the strangler fig pattern as our primary modernization strategy. Rather
 
 1. **Identify** a bounded workflow currently in Delphi/WPF.
 2. **Evaluate the replacement path:**
-   - **Reuse** — can this workflow be replaced by a new sheet in the Sheets platform using Meðvera? Many data capture and registration workflows can be expressed as configurable forms without writing a dedicated module.
+   - **Reuse** — can this workflow be replaced by a new sheet in the Sheets platform? Many data capture and registration workflows can be expressed as configurable forms without writing a dedicated module.
    - **Integrate** — can a third-party product handle this workflow, integrated through the shell and Saga's APIs (GraphQL, FHIR)? If a specialized tool already exists and integrates well, prefer it over building from scratch.
    - **Build** — if the workflow genuinely requires custom logic, UI, or data handling that neither Sheets nor a third party can provide, build a new SagaPlus module.
 3. **Route** users to the new solution, keeping the legacy path available during transition.
 4. **Retire** the legacy implementation once adoption is confirmed.
 
-This evaluation order is critical. The team's instinct may be to build a purpose-built replacement for every legacy screen, but that creates a maintenance burden that grows faster than the team. A sheet in Meðvera or a well-integrated third-party tool may cover 80% of a legacy workflow's value at 20% of the development and maintenance cost — and that is often the right trade-off.
+This evaluation order is critical. The team's instinct may be to build a purpose-built replacement for every legacy screen, but that creates a maintenance burden that grows faster than the team. A sheet in the Sheets platform or a well-integrated third-party tool may cover 80% of a legacy workflow's value at 20% of the development and maintenance cost — and that is often the right trade-off.
 
 A shared prioritization framework should weigh migration candidates by user impact, maintenance cost of the legacy implementation, and integration value. The four product pillars (Registration, Journal, Billing, Scheduling) define the current migration priorities.
 
