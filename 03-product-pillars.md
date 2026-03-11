@@ -4,7 +4,9 @@
 
 ---
 
-Future Saga development is organized around four strategic pillars. These pillars represent the core value Saga delivers to healthcare providers and define where the team's product investment is focused over the next 1–2 years.
+Future Saga development is organized around four strategic pillars. These pillars represent the areas of **new strategic investment** over the next 1–2 years — but they are not the entirety of the team's work.
+
+Saga includes a broad portfolio of existing modules — MedCard, Antenatal, Careteams (Meðvera), ADT, Blazor web applications, reporting tools, and many others — that serve critical clinical and administrative needs across the health system. These modules will continue to be actively maintained and enhanced with new features as customer needs evolve. The four pillars below do not replace this ongoing work; they represent the areas where we are making focused, strategic bets on the platform's future. The "reuse before build" principle below applies equally to feature requests within existing modules — where possible, extend what exists rather than building something new.
 
 ### Reuse Before Build
 

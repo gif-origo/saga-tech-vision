@@ -8,9 +8,13 @@
 
 ## 5.1.1 Strangler Fig Migration
 
-We adopt the strangler fig pattern as our primary modernization strategy. Rather than rewriting the system, we systematically replace Delphi/WPF functionality with modern alternatives. Each migration is a deliberate, scoped effort — but "migration" does not always mean "build a new custom module." For each legacy workflow, the team should evaluate the replacement approach in this order:
+We adopt the strangler fig pattern as our modernization strategy for the areas where migration is justified. Rather than rewriting the system, we selectively replace Delphi/WPF functionality with modern alternatives where the return on investment is clear.
 
-1. **Identify** a bounded workflow currently in Delphi/WPF.
+**Important context: most existing modules continue as-is.** Saga has a large portfolio of specialized modules — MedCard, Antenatal, Careteams (Meðvera), ADT, Blazor web applications, reporting tools, and many others — that are actively used and will continue to be maintained and enhanced. The strangler fig pattern applies to workflows targeted for migration to SagaPlus, not to the entire system. Existing modules that are stable, actively developed, and serving their users well do not need to be migrated for the sake of migration. Feature development and improvements to these modules are ongoing work that exists alongside — not in competition with — the strategic pillars.
+
+When a workflow **is** targeted for migration, each migration is a deliberate, scoped effort — but "migration" does not always mean "build a new custom module." For each legacy workflow, the team should evaluate the replacement approach in this order:
+
+1. **Identify** a bounded workflow currently in Delphi/WPF that is a candidate for migration.
 2. **Evaluate the replacement path:**
    - **Reuse** — can this workflow be replaced by a new sheet in the Sheets platform? Many data capture and registration workflows can be expressed as configurable forms without writing a dedicated module.
    - **Integrate** — can a third-party product handle this workflow, integrated through the shell and Saga's APIs (GraphQL, FHIR)? If a specialized tool already exists and integrates well, prefer it over building from scratch.
