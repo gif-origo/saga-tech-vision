@@ -25,7 +25,7 @@
 
 - **Journal:** Deliver the first version of the unified Journal overview — read-only, aggregating key data sources. Begin user rollout.
 - **Billing:** Analyze current SÍ integration, design the modernized claims workflow.
-- **Silva:** Define and implement the Saga ↔ Silva API contract for scheduling synchronization.
+- **Silva:** Define and implement the Saga ↔ Silva API contract for patient engagement workflows, starting with scheduling synchronization.
 - Deliver first FHIR-based integration (e.g., national patient registry or lab results).
 - **FHIR facade for EHDS critical resources:** Patient, MedicationRequest/MedicationDispense, and IPS Composition — aligned with the 2029 EHDS deadline.
 - Enable independent deployment of SagaPlus modules.
@@ -41,7 +41,7 @@
 
 - **Journal:** Add search capabilities, external data integration via FHIR, and expand data source coverage.
 - **Billing:** Deliver the improved billing experience with automated validation, real-time status, and reporting.
-- **Silva + Ísland.is:** Launch patient self-service scheduling through Ísland.is integration.
+- **Silva + Ísland.is:** Launch patient self-service scheduling and engagement workflows through Silva and Ísland.is integration.
 - Expand FHIR resource coverage (DiagnosticReport, Observation, ImagingStudy) targeting the 2031 EHDS wave.
 - **Secondary use readiness:** Design bulk data export capabilities for Health Data Access Body requests.
 - Evaluate MyHealth@EU integration requirements and plan national contact point connectivity.

@@ -18,7 +18,7 @@
 | Shell technology choice doesn't meet requirements | Rework or technology switch mid-stream | Build proof-of-concept early, test against key requirements (Angular hosting, IPC, cross-platform), make decision before committing to production development |
 | Process bridge IPC adds complexity and latency | Jarring user experience between legacy and modern modules | Start with minimal context sharing (patient, session), iterate based on user feedback, set performance budgets for context switches |
 | Journal aggregation performance | Slow Journal kills adoption | Design with caching, lazy loading, and progressive rendering from day one; set performance budgets |
-| Silva ↔ Saga integration complexity | Scheduling conflicts, data inconsistency | Define clear API contracts early, implement conflict resolution, test with realistic concurrent usage scenarios |
+| Silva ↔ Saga integration complexity | Workflow conflicts, scheduling inconsistency, data sync issues | Define clear API contracts early, implement conflict resolution, test with realistic concurrent usage scenarios |
 | Government trust erodes despite technical efforts | Political pressure to replace Saga | Engage proactively, deliver on transparency commitments early, treat government relationship as a first-class priority |
 | Third-party developer adoption is slow | Platform investment without ecosystem payoff | Start with one or two known partner integrations to validate the developer portal and MDK before scaling; ensure internal teams dogfood the same APIs and tools |
 | Third-party modules introduce security or quality issues | Degraded user experience, data exposure | Module certification process, sandboxed testing, clear security review gates before production deployment |
