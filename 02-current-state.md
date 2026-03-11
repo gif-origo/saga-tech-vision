@@ -41,7 +41,7 @@ The consolidation strategy should be treated as an enabler for everything else i
 
 **User adoption of new modules.** SagaPlus modules represent the future of the Saga UI, but migrating users from familiar Delphi/WPF workflows to Angular-based replacements is a persistent challenge. Users may resist change or run into friction when features don't yet reach parity.
 
-**Government trust and vendor lock-in concerns.** The Icelandic government has expressed concerns about dependency on Saga as a critical healthcare platform, the security of national health data, and the risk of vendor lock-in to Helix. These concerns must be addressed proactively through transparency, data portability, and standards adoption.
+**Government trust and vendor lock-in concerns.** The Icelandic government has expressed concerns about dependency on Saga as a critical healthcare platform, the security of national health data, and the risk of vendor lock-in to Helix. These concerns must be addressed proactively through transparency and standards adoption.
 
 ---
 

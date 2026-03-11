@@ -12,10 +12,9 @@ Helix's strategy is to meet these concerns through three reinforcing commitments
 
 **Principle: Helix does not own any health data. All data is owned by the healthcare institutions that generate it.**
 
-This is not just a contractual position — it should be architecturally enforced and verifiable:
+This is not just a contractual position — it should be verifiable:
 
-- **Data portability.** Institutions must be able to export their complete data at any time, in standard formats, without depending on Helix's cooperation or tooling. The FHIR facade ([Section 5.2](06-interoperability-ehds.md)) directly supports this — as FHIR resource coverage grows, so does the institution's ability to extract their data in an internationally recognized format.
-- **No data hostage scenarios.** If an institution chooses to leave Saga, their data must be fully extractable. Invest in comprehensive export tooling and document the data model so that institutions (or their chosen vendors) can migrate away. This may seem counterintuitive, but making exit easy actually builds trust and reduces the pressure to mandate alternatives.
+- **Data access through standardized APIs.** Data portability is not a separate workstream — it is a natural consequence of the FHIR and GraphQL APIs we are building for EHDS compliance and third-party integration ([Section 5.2](06-interoperability-ehds.md)). As FHIR resource coverage grows to meet EHDS requirements, institutions gain the ability to access their data in internationally recognized formats through the same interfaces. We do not plan to build dedicated export tooling beyond what these standardized APIs already provide.
 - **Clear data processing agreements.** Ensure that contracts and data processing agreements explicitly state that Helix acts as a data processor, not a data controller. Institutions retain full control over their data, including decisions about secondary use under EHDS.
 - **Transparent data handling.** Provide institutions with audit dashboards showing who accessed their data, when, and for what purpose. This extends the audit logging capabilities in [Section 5.4](08-security.md) into a trust-building tool.
 
@@ -42,13 +41,13 @@ This is a "source-available" or "government open source" model — not full open
 
 ## 4.3 Standards-Based Interoperability as Anti-Lock-In
 
-The strongest antidote to vendor lock-in is interoperability. If Saga exposes data and functionality through standard interfaces (FHIR, EHDS-compliant formats, standard APIs), then institutions can integrate with or migrate to alternative systems without being trapped by proprietary data formats.
+The strongest antidote to vendor lock-in is interoperability. When Saga exposes data through standard interfaces — FHIR for EHDS compliance, GraphQL for third-party integration — institutions can access and use their data through well-documented, standards-based APIs rather than being trapped by proprietary formats.
 
 This connects directly to the FHIR and EHDS work in [Section 5.2](06-interoperability-ehds.md):
 
-- **FHIR as the data liberation layer.** Every FHIR resource Saga exposes is a data pathway that institutions can use independently of Helix. The more complete the FHIR coverage, the less lock-in exists.
-- **Standard terminology and coding.** Adopt internationally recognized coding systems (SNOMED CT, ICD-10/11, LOINC) within the FHIR facade. This ensures that exported data is meaningful outside the Saga ecosystem.
-- **Open API documentation.** Publish API documentation for the FHIR facade and key integration interfaces. Third-party developers and government technical teams should be able to build against Saga's APIs without proprietary SDKs or Helix involvement.
+- **Standards-based access as a byproduct of compliance.** The FHIR endpoints we build for EHDS compliance and the GraphQL API we build for third-party integration naturally provide institutions with standardized access to their data. No separate portability effort is needed — the same APIs that serve integrations and regulatory requirements also serve data access needs.
+- **Standard terminology and coding.** Adopt internationally recognized coding systems (SNOMED CT, ICD-10/11, LOINC) within the FHIR facade. This ensures that data exposed through standardized APIs is meaningful outside the Saga ecosystem.
+- **Open API documentation.** Publish API documentation for the FHIR facade, GraphQL API, and key integration interfaces. Third-party developers and government technical teams should be able to build against Saga's APIs without proprietary SDKs or Helix involvement.
 - **EHDS compliance as proof of openness.** Full EHDS compliance inherently demonstrates that Saga is not a closed system — it can exchange data with any EHDS-compliant system across Europe.
 
 ## 4.4 Building the Government Relationship

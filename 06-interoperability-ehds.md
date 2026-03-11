@@ -97,7 +97,7 @@ The GraphQL and FHIR interfaces serve complementary roles:
 | **Primary audience** | Third-party module developers, internal frontends | External system integrators, cross-border health data exchange |
 | **Strength** | Flexible, efficient queries tailored to UI and workflow needs | Standards-based interoperability, EHDS compliance |
 | **Schema** | Saga-specific, domain-aligned | HL7 FHIR specification, national profiles |
-| **Use cases** | Custom modules in the shell, dashboards, workflow extensions | Lab integrations, national registries, patient data portability, EHDS |
+| **Use cases** | Custom modules in the shell, dashboards, workflow extensions | Lab integrations, national registries, EHDS compliance, cross-border data exchange |
 
 Both APIs are built on the same SagaPlus backend and share the same business logic, authorization, and data access — they are different projections of the same platform, not separate systems.
 
@@ -105,7 +105,7 @@ Both APIs are built on the same SagaPlus backend and share the same business log
 
 - **Third-party module ecosystem.** With a GraphQL API and a standardized shell module contract ([Section 5.1.4](05-architecture-modernization.md#514-multi-platform-shell)), external developers can build modules that run inside the Saga shell and query platform data — without needing access to Saga's internals.
 - **Integration without lock-in.** External systems can choose FHIR for standards-based exchange or GraphQL for richer, Saga-specific integrations. Neither requires proprietary SDKs or Helix involvement.
-- **Data sovereignty support.** Both APIs contribute to the data portability commitments in [Section 4](04-data-sovereignty.md) — GraphQL for operational data access, FHIR for standards-based export.
+- **Data sovereignty support.** Both APIs naturally support the data ownership principles in [Section 4](04-data-sovereignty.md) — institutions can access their data through standardized interfaces without requiring dedicated export tooling.
 
 ---
 

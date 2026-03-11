@@ -35,7 +35,7 @@
 - **Security:** Implement comprehensive audit logging for patient data access. Harden external-facing APIs (FHIR, Silva). Adopt SAST tooling.
 - **New shell:** Select shell technology. Implement process bridge IPC protocol (patient context, navigation). Begin internal dogfooding of new shell with early SagaPlus modules.
 - **Developer portal:** Launch developer portal with GraphQL playground, FHIR endpoint documentation, and authentication guide. Deploy sandbox environment with synthetic data. Publish first module starter templates.
-- **Data sovereignty:** Establish government-accessible source repository for SagaPlus components. Implement institutional data export tooling. Publish open API documentation for FHIR facade.
+- **Data sovereignty:** Establish government-accessible source repository for SagaPlus components. Publish open API documentation for FHIR facade.
 
 ## Phase 3: Scale (Q2–Q4 2027)
 
